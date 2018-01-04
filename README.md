@@ -3,6 +3,10 @@
 
 ### github地址：[github](https://github.com/huacangliang/Bamboo)
 
+### 本次修改：
+1. 修复中文存储错误
+2. 新增测试demo
+
 ###  
     /**
      * <p>竹子数据持久化系统，创意来源：因数据结构像竹子的节一样而得名</p>
