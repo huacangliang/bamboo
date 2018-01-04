@@ -487,7 +487,7 @@ public class IOServer {
     }
 
     /**
-     * head 区域从第6个位置开始，前面的0-2 文件类型 3-5当前版本
+     * head 区域从第6个位置开始，前面的0-1 2个字节文件类型 2-5 4个字节当前版本
      * 每个key的长度=int4+key字符长度+long8文件开始偏移+int4文件长度+int4字段尺寸+byte1文件状态=21+key(size)
      */
     private FileInfo createHeadImpl(String key, int dataSize) throws Exception {
