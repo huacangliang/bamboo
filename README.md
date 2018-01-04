@@ -1,7 +1,7 @@
 # Bamboo
 ## 跨进程数据库持久化系统，独创竹节数据结构，让读写更快速。解决Android中的原生数据库经常发生各种意外问题
 
-###github地址：[github](https://github.com/huacangliang/Bamboo)
+### github地址：[github](https://github.com/huacangliang/Bamboo)
 
 ###  
     /**
