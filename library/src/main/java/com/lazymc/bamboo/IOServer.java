@@ -360,12 +360,15 @@ public class IOServer {
                 saveHead(info);
 
                 LinkedList<FileInfo> queue = new LinkedList<>(headQueue);
-                //先计算出整个head+body的尺寸
-                int size = info.dataSize + getKeySize() + info.key.length();
+
                 Iterator<FileInfo> it = queue.iterator();
 
                 int keySize = getKeySize();
-                int keyLen = info.key.length();
+                int keyLen = getKeyStrLength(info.key);
+
+                //先计算出整个head+body的尺寸
+                int size = info.dataSize + getKeySize() + keyLen;
+
                 long offsetStart = info.startPosition - keySize - keyLen;
                 long offsetOriginal = info.startPosition + info.dataSize;
 
@@ -384,7 +387,7 @@ public class IOServer {
                     int block = (int) (accessFile.length() / _2MB);
                     int m = (int) (accessFile.length() % _2MB);
                     for (int i = 0; i < block; i++) {
-                        offsetStart+=_2MB * i;
+                        offsetStart += _2MB * i;
                         if (i == block - 1) {
                             if (m != 0) {
                                 byte[] buffer = readBlock(offsetOriginal + (_2MB * i), m);
@@ -499,7 +502,7 @@ public class IOServer {
                 currentPos = getMagicSize();
             }
 
-            int keySize = key.length();
+            int keySize = getKeyStrLength(key);
 
             //key size int4
             accessFile.seek(currentPos);
@@ -529,22 +532,27 @@ public class IOServer {
         return new FileInfo(key, currentPos, dataSize, dataSize, (byte) 0);
     }
 
+    private int getKeyStrLength(String key) {
+        return key.getBytes().length;
+    }
+
     private int getMagicSize() {
         return 6;
     }
 
     private void saveHead(FileInfo info) throws IOException {
-        long pos = info.startPosition - getKeySize() - info.key.length();
+        int keyLen=getKeyStrLength(info.key);
+        long pos = info.startPosition - getKeySize() - keyLen;
         if (pos <= 0) return;
         if (pos > accessFile.length()) return;
         try {
             synchronized (writeLock) {
                 accessFile.seek(pos);
-                accessFile.writeInt(info.key.length());
+                accessFile.writeInt(keyLen);
                 pos += 4;
                 accessFile.seek(pos);
                 accessFile.write(info.key.getBytes());
-                pos += info.key.length();
+                pos += keyLen;
                 accessFile.seek(pos);
                 accessFile.writeByte(info.state);
                 pos += 1;

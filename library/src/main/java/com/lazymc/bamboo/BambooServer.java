@@ -74,8 +74,9 @@ class BambooServer implements IBambooServer {
 
     @Override
     public boolean write(final String key, String data) {
-        byte[] buffer = new byte[data.length() + 2];
-        System.arraycopy(data.getBytes(), 0, buffer, 1, data.length());
+        int dataLen=data.getBytes().length;
+        byte[] buffer = new byte[dataLen + 2];
+        System.arraycopy(data.getBytes(), 0, buffer, 1, dataLen);
         buffer[buffer.length - 1] = Bamboo.END_TAG;
         buffer[0] = Bamboo.END_TAG;
         return ioServer.write(key, buffer);

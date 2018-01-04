@@ -1,4 +1,4 @@
-package com.lazymc.bamboo;
+package com.lazymc.demo;
 
 import org.junit.Test;
 
