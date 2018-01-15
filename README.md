@@ -4,7 +4,7 @@
 
 ## 跨进程数据库持久化系统，独创竹节数据结构，让读写更快速。解决Android中的原生数据库经常发生各种意外问题
 
-### github地址：[github](https://github.com/huacangliang/Bamboo)
+### 码云地址：[Bamboo](https://gitee.com/836673942/Bamboo)
 
 ### 本次修改：
 1. 修复中文存储错误
