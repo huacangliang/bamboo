@@ -1,4 +1,7 @@
 # Bamboo
+
+[![Download](https://api.bintray.com/packages/wulugongshe/maven/bamboo/images/download.svg) ](https://bintray.com/wulugongshe/maven/bamboo/_latestVersion)
+
 ## 跨进程数据库持久化系统，独创竹节数据结构，让读写更快速。解决Android中的原生数据库经常发生各种意外问题
 
 ### github地址：[github](https://github.com/huacangliang/Bamboo)
@@ -7,8 +10,17 @@
 1. 修复中文存储错误
 2. 新增测试demo
 
-###  
-    /**
+### android-studio gradle
+``` 
+  project：
+    repositories {
+     maven { url 'https://dl.bintray.com/wulugongshe/maven' }
+                 }
+  app：
+    compile 'com.lazymc:bamboo:1.0.1'
+```
+
+### /**
      * <p>竹子数据持久化系统，创意来源：因数据结构像竹子的节一样而得名</p>
      * <p>该系统应该配合数据缓存使用，因为直接操作io，会降低系统性能</p>
      * <p>理论上该数据支持物理最大化存储，数据结构应当保持不变，不变的前提是初始化数据的长度要尽量的合理，否则导致后面的长度变长而
