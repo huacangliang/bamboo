@@ -47,6 +47,7 @@ public class ResponseInvoker {
     private OutputStream outputStream;
     private LocalSocket client;
     private IBambooServer server;
+    private boolean isClose = false;
 
     public ResponseInvoker(IBambooServer server, LocalSocket client) throws FileNotFoundException {
         this.server = server;
@@ -80,6 +81,8 @@ public class ResponseInvoker {
                 e.printStackTrace();
             }
 
+            close();
+
         }
     }
 
@@ -88,7 +91,7 @@ public class ResponseInvoker {
         int read = 0;
         String value = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while (true) {
+        while (!isClose) {
             try {
                 read = inputStream.read(buffer);
             } catch (IOException e) {
@@ -102,6 +105,8 @@ public class ResponseInvoker {
                     bos = new ByteArrayOutputStream();
                     response(value);
                 }
+            } else if (read == -1) {
+                break;
             }
         }
     }
@@ -229,7 +234,17 @@ public class ResponseInvoker {
     }
 
     private void close() {
-
+        isClose = true;
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void get(String key) throws Exception {

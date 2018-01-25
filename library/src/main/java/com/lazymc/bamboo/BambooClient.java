@@ -184,7 +184,7 @@ class BambooClient implements IBambooServer {
         return !isConnected;
     }
 
-    private void close() {
+    public void close() {
         isConnected = false;
         if (inputStream != null) {
             try {

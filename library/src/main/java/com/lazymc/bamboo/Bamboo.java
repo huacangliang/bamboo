@@ -7,6 +7,9 @@ import android.net.LocalSocketAddress;
 import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by longyu on 2017/12/18.
@@ -134,12 +137,12 @@ public class Bamboo {
     }
 
     public void close() throws IOException {
-        if (serverSocket != null) {
-            serverSocket.close();
+        if (bambooServer != null) {
+            bambooServer.close();
         }
 
-        if (server != null) {
-            server.close();
+        if (bambooServer != null) {
+            bambooServer.close();
         }
 
         if (ioServer != null) {

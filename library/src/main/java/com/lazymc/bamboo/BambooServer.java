@@ -42,7 +42,7 @@ class BambooServer implements IBambooServer {
     private LocalServerSocket serverSocket;
     private IOServer ioServer;
 
-    public BambooServer(LocalServerSocket serverSocket, final IOServer ioServer) {
+    BambooServer(LocalServerSocket serverSocket, final IOServer ioServer) {
         this.serverSocket = serverSocket;
         this.ioServer = ioServer;
         new Thread() {
@@ -74,7 +74,7 @@ class BambooServer implements IBambooServer {
 
     @Override
     public boolean write(final String key, String data) {
-        int dataLen=data.getBytes().length;
+        int dataLen = data.getBytes().length;
         byte[] buffer = new byte[dataLen + 2];
         System.arraycopy(data.getBytes(), 0, buffer, 1, dataLen);
         buffer[buffer.length - 1] = Bamboo.END_TAG;
@@ -113,5 +113,10 @@ class BambooServer implements IBambooServer {
     @Override
     public boolean isClose() {
         return false;
+    }
+
+    @Override
+    public void close() {
+
     }
 }

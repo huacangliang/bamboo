@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.lazymc.bamboo.Bamboo;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 
@@ -27,12 +28,22 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         try {
-            bamboo = new Bamboo(new File(mkdir(Environment.getExternalStorageDirectory().getAbsolutePath() + "/bamboo"),"test.db"));
+            bamboo = new Bamboo(new File(mkdir(Environment.getExternalStorageDirectory().getAbsolutePath() + "/bamboo"), "test.db"));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            bamboo.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initView() {
@@ -107,8 +118,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     }
 
     private boolean checkKey(String key) {
-        if (TextUtils.isEmpty(key))
-        {
+        if (TextUtils.isEmpty(key)) {
             Toast.makeText(this, "key不能为空", Toast.LENGTH_SHORT).show();
             return true;
         }

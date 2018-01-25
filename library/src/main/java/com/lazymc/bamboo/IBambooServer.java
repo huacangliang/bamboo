@@ -80,4 +80,9 @@ public interface IBambooServer {
      * @return
      */
     boolean isClose();
+
+    /**
+     * 关闭连接，只能关闭客户端，服务端由于底层原因没法关闭
+     */
+    void close();
 }
