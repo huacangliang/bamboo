@@ -1,0 +1,33 @@
+apply plugin: 'java'
+apply plugin: 'com.novoda.bintray-release'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.google.auto.service:auto-service:1.0-rc2'
+}
+
+publish {
+    userOrg = 'wulugongshe'      //bintray注册的用户名
+    groupId = 'com.lazymc'         //compile引用时的第1部分groupId
+    artifactId = 'universal-proxy'     //compile引用时的第2部分项目名
+    publishVersion = '1.0.1'    //compile引用时的第3部分版本号
+    desc = 'This is a bamboo db extend library'
+    website = 'https://github.com/huacangliang/universal-proxy'
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"
+
+tasks.withType(Javadoc) { //兼容中文
+    options.addStringOption('Xdoclint:none','-quiet')
+    options.addStringOption('encoding','UTF-8')
+    options{
+        encoding "UTF-8"
+        charSet 'UTF-8'
+        links "http://docs.oracle.com/javase/7/docs/api"
+    }
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
