@@ -10,10 +10,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.lazymc.bamboo.Bamboo;
+import com.lazymc.universalproxy.annotation.ProxyInject;
 
 import java.io.File;
 import java.io.IOException;
 
+@ProxyInject
 public class MainActivity extends Activity implements View.OnClickListener {
 
     private EditText mEtKey;

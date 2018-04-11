@@ -2,6 +2,7 @@ package com.lazymc.bamboo;
 
 import android.net.LocalSocket;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import org.json.JSONObject;
 
@@ -47,7 +48,6 @@ public class ResponseInvoker {
     private OutputStream outputStream;
     private LocalSocket client;
     private IBambooServer server;
-    private boolean isClose = false;
 
     public ResponseInvoker(IBambooServer server, LocalSocket client) throws FileNotFoundException {
         this.server = server;
@@ -81,8 +81,6 @@ public class ResponseInvoker {
                 e.printStackTrace();
             }
 
-            close();
-
         }
     }
 
@@ -91,7 +89,7 @@ public class ResponseInvoker {
         int read = 0;
         String value = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        while (!isClose) {
+        while (true) {
             try {
                 read = inputStream.read(buffer);
             } catch (IOException e) {
@@ -105,8 +103,6 @@ public class ResponseInvoker {
                     bos = new ByteArrayOutputStream();
                     response(value);
                 }
-            } else if (read == -1) {
-                break;
             }
         }
     }
@@ -119,9 +115,10 @@ public class ResponseInvoker {
                     JSONObject object = new JSONObject(value);
                     String k = object.optString("key");
                     String v = object.optString("value");
+                    boolean isBase64 = object.optBoolean("isBase64", false);
                     String op = object.optString("op");
                     if (!TextUtils.isEmpty(k) && !TextUtils.isEmpty("op")) {
-                        operation(op, k, v);
+                        operation(op, k, v, isBase64);
                     } else {
                         answerError();
                     }
@@ -137,13 +134,13 @@ public class ResponseInvoker {
         });
     }
 
-    private void operation(String op, String key, String value) throws Exception {
+    private void operation(String op, String key, String value, boolean isBase64) throws Exception {
         if ("set".equals(op)) {
-            set(key, value);
+            set(key, value, isBase64);
         } else if ("get".equals(op)) {
             get(key);
         } else if ("cut".equals(op)) {
-            set(key, null);
+            set(key, null, isBase64);
         } else if ("remove".equals(op)) {
             remove(key);
         } else if ("clearRef".equals(op)) {
@@ -162,9 +159,21 @@ public class ResponseInvoker {
         outputStream.write('\0');
     }
 
-    private void set(String key, String value) throws Exception {
+    private void set(String key, String value, boolean isBase64) throws Exception {
         if (value == null) {
             if (server.cut(key)) {
+                try {
+                    outputStream.write("ok".getBytes());
+                    outputStream.write('\0');
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    close();
+                }
+                return;
+            }
+        } else if (isBase64) {
+            byte[] data = Base64.decode(value, Base64.NO_CLOSE | Base64.NO_PADDING | Base64.NO_WRAP);
+            if (server.write(key, data)) {
                 try {
                     outputStream.write("ok".getBytes());
                     outputStream.write('\0');
@@ -234,17 +243,7 @@ public class ResponseInvoker {
     }
 
     private void close() {
-        isClose = true;
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
     private void get(String key) throws Exception {

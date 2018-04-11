@@ -41,6 +41,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Bamboo {
 
+
     private LocalServerSocket serverSocket;
     private LocalSocket server;
 
@@ -60,13 +61,13 @@ public class Bamboo {
      * <p>使用方式：
      * 先初始化
      *
-     * @see Bamboo.init()
+     * @see com.omg.bamboo.Bamboo.getInstance().init()
      * 再获取服务
-     * @see Bamboo.getBambooServer().remove(key);
-     * @see Bamboo.getBambooServer().read(key);
-     * @see Bamboo.getBambooServer().write(key, value);
-     * @see Bamboo.getBambooServer().cut(key)
-     * @see Bamboo.getBambooServer().clearRef()
+     * @see Bamboo.getInstance().getBambooServer().remove(key);
+     * @see Bamboo.getInstance().getBambooServer().read(key);
+     * @see Bamboo.getInstance().getBambooServer().write(key, value);
+     * @see Bamboo.getInstance().getBambooServer().cut(key)
+     * @see Bamboo.getInstance().getBambooServer().clearRef()
      * <p>
      * 系统优缺点：
      * 优点，支持多进程，对增量写友好，不耗费多余资源，对文件操作快速（因为基于随机读写）
@@ -137,12 +138,12 @@ public class Bamboo {
     }
 
     public void close() throws IOException {
-        if (bambooServer != null) {
-            bambooServer.close();
+        if (serverSocket != null) {
+            serverSocket.close();
         }
 
-        if (bambooServer != null) {
-            bambooServer.close();
+        if (server != null) {
+            server.close();
         }
 
         if (ioServer != null) {

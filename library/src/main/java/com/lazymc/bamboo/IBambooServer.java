@@ -40,6 +40,16 @@ public interface IBambooServer {
     boolean write(String key, String data) throws Exception;
 
     /**
+     * 保存数据，会覆盖前面的数据
+     *
+     * @param key
+     * @param data
+     * @return
+     * @throws Exception
+     */
+    boolean write(String key, byte[] data) throws Exception;
+
+    /**
      * 读取数据，读取失败或没有值返回空字符“”
      *
      * @param key
@@ -47,6 +57,15 @@ public interface IBambooServer {
      * @throws Exception
      */
     String read(String key) throws Exception;
+
+    /**
+     * 读取数据，读取失败或没有值返回空字符“”
+     *
+     * @param key
+     * @return
+     * @throws Exception
+     */
+    byte[] readBytes(String key) throws Exception;
 
     /**
      * 删除数据，标记删除
@@ -80,9 +99,4 @@ public interface IBambooServer {
      * @return
      */
     boolean isClose();
-
-    /**
-     * 关闭连接，只能关闭客户端，服务端由于底层原因没法关闭
-     */
-    void close();
 }
