@@ -2,7 +2,7 @@
 
 [![Download](https://api.bintray.com/packages/wulugongshe/maven/bamboo/images/download.svg) ](https://bintray.com/wulugongshe/maven/bamboo/_latestVersion)
 
-## 跨进程数据库持久化系统，独创竹节数据结构，让读写更快速。解决Android中的原生数据库经常发生各种意外问题
+## 跨进程数据库持久化系统，独创竹节数据结构，让读写更快速。Android跨进程共享数据框架
 
 ### 码云地址：[Bamboo](https://gitee.com/836673942/Bamboo)
 
