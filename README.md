@@ -17,7 +17,7 @@
      maven { url 'https://dl.bintray.com/wulugongshe/maven' }
                  }
   app：
-    compile 'com.lazymc:bamboo:1.0.1'
+    compile 'com.lazymc:bamboo:$version'
 ```
 
 ### /**
